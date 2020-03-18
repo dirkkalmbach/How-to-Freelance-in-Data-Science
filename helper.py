@@ -5,6 +5,13 @@ from zipfile import ZipFile
 
 schema2019 = pd.read_csv("data/raw data/developer_survey_2019/survey_results_schema.csv")
 
+# load 2019 survey results (if not already loaded)
+try:
+    df
+except NameError:
+    df = load_csv("data/raw data/developer_survey_2019/survey_results_public.csv.zip")
+    
+
 
 def load_csv(file):
     '''
@@ -36,6 +43,19 @@ def get_desc(column_name, schema=schema2019):
     
     return desc
 
+
+def get_cat(column_name, df=df):
+    '''
+    INPUT - column_name - string - the categories column name you want to know about
+          - df - pandas dataframe
+    OUTPUT - 
+            cat - list - categories of this variable
+    '''
+    
+    if df[column_name].dtype=="object":
+        return list(df[column_name].unique())
+    else:
+        return mean(df[column_name])
 
 
 def df_info(df):
